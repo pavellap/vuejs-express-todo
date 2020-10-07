@@ -1,17 +1,32 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <TodoList
+      v-bind:todos="todos"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import TodoList from '@/components/TodoList'
+/**
+* Вместо props у нас директива v-bind:<propName>="<state.value>"
+* */
 export default {
   name: 'App',
+  /*
+  * Here we register components
+  * */
+  data: () => {
+    return {
+      todos: [
+        {id: 1, title: "Выучить Vue.js", completed: false},
+        {id: 2, title: "Выучить Express.js", completed: false},
+        {id: 3, title: "Написать fullstack todo в связке vue.js + express.js", completed: false},
+      ]
+    }
+  },
   components: {
-    HelloWorld
+    TodoList
   }
 }
 </script>

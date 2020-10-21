@@ -1,6 +1,9 @@
 <template>
    <div id="app">
       <h1>Todo application</h1>
+      <v-btn block>
+         Hey, I am material-ui button
+      </v-btn>
       <hr/>
       <!-- Аналог Router в React  -->
       <router-view />
@@ -8,7 +11,7 @@
 </template>
 
 <script>
-
+import axios from 'axios'
 
 /**
  * Вместо props у нас директива v-bind:<propName>="<state.value>"
@@ -30,7 +33,13 @@ export default {
    },
    mounted() {
       fetch('https://jsonplaceholder.typicode.com/todos/1')
-          .then(response => response.json()).then(data => this.todos.push(data))
+          .then(response => response.json())
+          .then(data => this.todos.push(data)).then(() => {
+             axios.post('http://localhost:4000/addTodo', {
+                test: "yes"
+             })
+      });
+
    },
    methods: {
       removeTodo(id) {

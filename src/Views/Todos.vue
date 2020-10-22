@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import TodoList from '@/components/TodoList'
-import AddTodo from '@/components/AddTodo'
+import TodoList from '@/Components/TodoList'
+import AddTodo from '@/Components/AddTodo'
 import {mapGetters, mapActions} from 'vuex'
 
 /**
@@ -25,7 +25,7 @@ import {mapGetters, mapActions} from 'vuex'
 export default {
    name: 'App',
    /**
-   * Here we register components
+   * Here we register Components
    * */
    components: {
       TodoList,

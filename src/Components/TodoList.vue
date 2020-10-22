@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import TodoItem from "@/components/TodoItem";
+import TodoItem from "@/Components/TodoItem";
 
 export default {
    components: {

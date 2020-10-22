@@ -1,6 +1,6 @@
 <template>
-   <div>
-      <h2>Home page</h2>
+   <div :is="layout">
+      <h2>Start page</h2>
       <p>Lorem ipsum dolor sit amet, co</p>
       <router-link to="/todos">Todos</router-link>
    </div>
@@ -8,7 +8,12 @@
 
 <script>
 export default {
-   name: "Home"
+   name: "Home",
+   computed: {
+      layout() {
+         return 'auth-layout'
+      }
+   }
 }
 </script>
 

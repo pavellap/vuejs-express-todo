@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 /**
  * Вместо props у нас директива v-bind:<propName>="<state.value>"
@@ -19,37 +18,8 @@ import axios from 'axios'
  * */
 export default {
    name: 'App',
-   /*
-   * Here we register components
-   * */
-   data: () => {
-      return {
-         todos: [
-            {id: 1, title: "Выучить Vue.js", completed: false},
-            {id: 2, title: "Выучить Express.js", completed: false},
-            {id: 3, title: "Написать fullstack todo в связке vue.js + express.js", completed: false},
-         ]
-      }
-   },
-   mounted() {
-      fetch('https://jsonplaceholder.typicode.com/todos/1')
-          .then(response => response.json())
-          .then(data => this.todos.push(data)).then(() => {
-             axios.post('http://localhost:4000/addTodo', {
-                test: "yes"
-             })
-      });
-
-   },
-   methods: {
-      removeTodo(id) {
-         this.todos = this.todos.filter(item => item.id !== id)
-      },
-      addTodo(todo) {
-         this.todos = this.todos.concat([todo])
-      }
-   }
 }
+
 </script>
 
 <style>

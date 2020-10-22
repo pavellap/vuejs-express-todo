@@ -6,17 +6,23 @@
       <strong>ID: {{ todo.id }}</strong>
          {{ todo.title }}
     </span>
-      <button v-on:click="$emit('remove-todo', todo.id)" class="rm">&times;</button>
+      <button v-on:click="removeTodo(todo.id)" class="rm">&times;</button>
    </li>
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
    props: {
       todo: {
          type: Object,
          required: true
       }
+   },
+   methods: mapActions(['removeTodo']),
+   mounted() {
+      console.log("Mounted todo item...")
    }
 }
 </script>

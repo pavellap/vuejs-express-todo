@@ -5,8 +5,8 @@
           @add-todo="addTodo"
       />
       <TodoList
-          v-bind:todos="todos"
-          v-if="todos.length"
+          v-bind:todos="getTodos"
+          v-if="getTodos.length"
           @remove-todo="removeTodo"
       />
       <p v-else>No todos</p>
@@ -16,6 +16,7 @@
 <script>
 import TodoList from '@/components/TodoList'
 import AddTodo from '@/components/AddTodo'
+import {mapGetters, mapActions} from 'vuex'
 
 /**
  * Вместо props у нас директива v-bind:<propName>="<state.value>"
@@ -23,33 +24,19 @@ import AddTodo from '@/components/AddTodo'
  * */
 export default {
    name: 'App',
-   /*
+   /**
    * Here we register components
    * */
-   data: () => {
-      return {
-         todos: [
-            {id: 1, title: "Выучить Vue.js", completed: false},
-            {id: 2, title: "Выучить Express.js", completed: false},
-            {id: 3, title: "Написать fullstack todo в связке vue.js + express.js", completed: false},
-         ]
-      }
-   },
    components: {
       TodoList,
       AddTodo
    },
-   mounted() {
-      fetch('https://jsonplaceholder.typicode.com/todos/1')
-          .then(response => response.json()).then(data => this.todos.push(data))
+   computed: mapGetters(['getTodos', 'todosCount']),
+   async mounted() {
+      await this.fetchTodos({test: "Hey"})
    },
    methods: {
-      removeTodo(id) {
-         this.todos = this.todos.filter(item => item.id !== id)
-      },
-      addTodo(todo) {
-         this.todos = this.todos.concat([todo])
-      }
+      ...mapActions(['fetchTodos', "removeTodo", "addTodo"])
    }
 }
 </script>

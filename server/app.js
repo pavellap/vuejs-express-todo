@@ -18,15 +18,21 @@ app.use(bodyParser.urlencoded({
 app.use(express.json());
 
 
-app.post('/todos', (req, res) => {
+app.post('/todo', async (req, res) => {
     console.log("Request: ", req.body);
-    const {title} = req.body
-    const id = generateID();
-    const newTodo = Todo({title, id, completed: false});
-    newTodo.save().then(() => res.send("Todo successfully added!")).catch((e) => {
-        console.log("Error while adding Todo: ", e);
-        res.sendStatus(400)
-    });
+    try {
+        const {title} = req.body
+        const id = generateID();
+        const newTodo = Todo({title, id, completed: false});
+        const todo = await newTodo.save();
+        res.send({
+            todo
+        })
+    }
+    catch (e) {
+        console.log("Error occurred when adding new todo item: ", e);
+        res.sendStatus(404).json({info: "Internal error, try later or notice backend developer"})
+    }
 });
 
 app.get('/todos', async (req, res) => {
@@ -40,12 +46,23 @@ app.get('/todos', async (req, res) => {
     }
 });
 
-app.delete('/todo', async (req, res) => {
-    const {id} = req.body;
-    console.log("Id", id)
-    const todos = await Todo.deleteOne({_id: id});
+app.delete('/todo/:id', async (req, res) => {
+    const id = req.params.id;
+    const todos = await Todo.deleteOne({id});
     res.send({todos})
 });
+
+app.put('/todo', async (req, res) => {
+    try {
+        const {id, title, completed} = req.body;
+        const todo = await Todo.updateOne({id}, {title, completed})
+        res.send({todo})
+    }
+    catch (e) {
+        console.log("Error occurred when fetching all todos: ", e);
+        res.sendStatus(400).send({error: "db error"})
+    }
+})
 
 app.delete('/todos', (async (req, res) => {
     try {
@@ -58,6 +75,7 @@ app.delete('/todos', (async (req, res) => {
     }
 }));
 
+// start our app with async IIFE
 (async function () {
     try {
         // if we run mongodb locally, we can specify first param with localhost path
@@ -67,7 +85,7 @@ app.delete('/todos', (async (req, res) => {
             console.log("MongoDB database connection established successfully");
         })
     } catch (e) {
-        console.error("Got error while establishing connection between atlas...", e)
+        console.error("Got error while establishing connection with atlas...", e)
     }
     app.listen(PORT, () => {
         console.log(chalk.magenta("Server is running on ") + chalk.blue(`http://localhost:${PORT}`))
